@@ -1,0 +1,213 @@
+import React, { useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
+
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [taskInput, setTaskInput] = useState('');
+
+  const addTask = () => {
+    setTasks([...tasks, taskInput]);
+    setTaskInput('');
+  };
+
+  return (
+    <View style={{ flex: 1, padding: 20 }}>
+      <TextInput
+        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        value={taskInput}
+        onChangeText={setTaskInput}
+        placeholder="Enter a task"
+      />
+      <TouchableOpacity onPress={addTask}>
+        <Text>Add Task</Text>
+      </TouchableOpacity>
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => <Text>{item}</Text>}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+};
+
+export default App;
+import React, { useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, TextInput, Switch } from 'react-native';
+
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [taskInput, setTaskInput] = useState('');
+  const [remindersEnabled, setRemindersEnabled] = useState(false);
+
+  const addTask = () => {
+    setTasks([...tasks, { name: taskInput, reminder: remindersEnabled }]);
+    setTaskInput('');
+  };
+
+  return (
+    <View style={{ flex: 1, padding: 20 }}>
+      <TextInput
+        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        value={taskInput}
+        onChangeText={setTaskInput}
+        placeholder="Enter a task"
+      />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text>Reminder:</Text>
+        <Switch value={remindersEnabled} onValueChange={setRemindersEnabled} />
+      </View>
+      <TouchableOpacity onPress={addTask}>
+        <Text>Add Task</Text>
+      </TouchableOpacity>
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>{item.name}</Text>
+            {item.reminder && <Text>(reminder set)</Text>}
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+};
+
+export default App;
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Switch, Platform } from 'react-native';
+import { Speech } from 'expo';
+
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [remindersEnabled, setRemindersEnabled] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS === 'android') {
+        await Speech.requestPermissionsAsync();
+      }
+    })();
+  }, []);
+
+  const addTask = async () => {
+    const { result } = await Speech.startSpeechRecognitionAsync();
+    setTasks([...tasks, { name: result, reminder: remindersEnabled }]);
+  };
+
+  return (
+    <View style={{ flex: 1, padding: 20 }}>
+      <TouchableOpacity onPress={addTask}>
+        <Text>Dictate Task</Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text>Reminder:</Text>
+        <Switch value={remindersEnabled} onValueChange={setRemindersEnabled} />
+      </View>
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>{item.name}</Text>
+            {item.reminder && <Text>(reminder set)</Text>}
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+};
+
+export default App;
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Switch, Platform } from 'react-native';
+import { Speech } from 'expo';
+
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [remindersEnabled, setRemindersEnabled] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS === 'android') {
+        await Speech.requestPermissionsAsync();
+      }
+    })();
+  }, []);
+
+  const addTask = async () => {
+    const { result } = await Speech.startSpeechRecognitionAsync();
+    setTasks([...tasks, { name: result, reminder: remindersEnabled }]);
+    await Speech.speak(result, { rate: 0.75 });
+  };
+
+  return (
+    <View style={{ flex: 1, padding: 20 }}>
+      <TouchableOpacity onPress={addTask}>
+        <Text>Dictate Task</Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text>Reminder:</Text>
+        <Switch value={remindersEnabled} onValueChange={setRemindersEnabled} />
+      </View>
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>{item.name}</Text>
+            {item.reminder && <Text>(reminder set)</Text>}
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+};
+
+export default App;
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Switch, Platform } from 'react-native';
+import { Speech } from 'expo';
+
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [remindersEnabled, setRemindersEnabled] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS === 'android') {
+        await Speech.requestPermissionsAsync();
+      }
+    })();
+  }, []);
+
+  const addTask = async () => {
+    const { result } = await Speech.startSpeechRecognitionAsync();
+    setTasks([...tasks, { name: result, reminder: remindersEnabled }]);
+    await Speech.speak(result, { rate: 0.75 });
+  };
+
+  return (
+    <View style={{ flex: 1, padding: 20 }}>
+      <TouchableOpacity onPress={addTask}>
+        <Text>Dictate Task</Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text>Reminder:</Text>
+        <Switch value={remindersEnabled} onValueChange={setRemindersEnabled} />
+      </View>
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>{item.name}</Text>
+            {item.reminder && <Text>(reminder set)</Text>}
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+};
+
+export default App;
